@@ -15,6 +15,7 @@ class Cpu {
     uint16_t read16atPC(); // read next two bytes and increment PC twice
 
     public:
-        int loadRom(const char* path);
+        int loadRom(std::istream &rom);
+        int loadRom(const char* rom);
         int decode();
 };

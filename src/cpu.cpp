@@ -1,21 +1,22 @@
 #include "cpu.hpp"
 
-int Cpu::loadRom(const char* path) {
-    std::ifstream rom(path, std::ios::binary);
-    if (rom.fail()) {
-        std::cerr << "Failed to read rom at: " << path << std::endl;
-        exit(1);
+int Cpu::loadRom(std::istream &rom) {
+    if (!rom) {
+        std::cerr << "Failed to read rom stream" << std::endl;
+        return -1;
     }
 
     uint16_t address = 0;
     uint8_t byte = 0;
-    while(!rom.eof()) {
-        rom.read(reinterpret_cast<char*>(&byte), 1);
-        memory.write(address, byte);
-        address++;
+    while(rom.read(reinterpret_cast<char*>(&byte), 1)) {
+        memory.write(address++, byte);
     }
-    rom.close();
     return 0;
+}
+
+int Cpu::loadRom(const char* path) {
+    std::ifstream rom(path, std::ios::binary);
+    return loadRom(rom);
 }
 
 void Cpu::UnimplementedInstruction(uint16_t PC) {
@@ -32,7 +33,7 @@ uint16_t Cpu::read16atPC() {
 int Cpu::decode() {
     const uint8_t opcode = memory.read(regs.PC);
 
-    std::cout << "0x" << std::hex << (int)opcode << '\n';
+    // std::cout << "0x" << std::hex << (int)opcode << '\n';
 
     uint16_t address;
     uint8_t temp8;
