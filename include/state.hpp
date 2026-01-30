@@ -4,17 +4,18 @@
 #include <iostream>
 
 class Memory {
-    uint8_t data[0x10000] = {0};
+    protected:
+        uint8_t data[0x10000] = {0};
     public:
-    void write(uint16_t address, uint8_t value);
-    uint8_t read(uint16_t address) const;
-    uint16_t read16(uint16_t address) const;
+        void write(uint16_t address, uint8_t value);
+        uint8_t read(uint16_t address) const;
+        uint16_t read16(uint16_t address) const;
 };
 
-class Registers
-{
-    uint16_t readPair(uint8_t high, uint8_t low);
-    void setPair(uint8_t *high, uint8_t *low, uint16_t value);
+class Registers {
+    protected:
+        uint16_t readPair(uint8_t high, uint8_t low);
+        void setPair(uint8_t *high, uint8_t *low, uint16_t value);
 
 
     public:
@@ -62,3 +63,4 @@ class Registers
         uint16_t readHL() { return readPair(H, L); };
         void setHL(uint16_t value) { setPair(&H, &L, value); }
 };
+
